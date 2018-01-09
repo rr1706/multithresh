@@ -10,6 +10,9 @@ def nothing(x):
 
 setting = {'hue_min': 0, 'hue_max': 180, 'sat_min': 0, 'sat_max': 255, 'val_min': 0, 'val_max': 255, 'on': 0}
 setting_file = os.path.join(os.path.expanduser('~'), '.multithresh.json')
+if os.path.exists(setting_file):
+    with open(setting_file, 'r') as f:
+        setting = json.load(f)
 
 winname = "multithresh"
 switch = '0 : OFF \n1 : ON'
@@ -18,17 +21,14 @@ img = np.zeros((300,512,3), np.uint8)
 cv2.namedWindow(winname)
 cv2.namedWindow("Image", cv2.WINDOW_NORMAL)
 cv2.imshow(winname, img)
-cv2.createTrackbar('H_min', winname, 0, 180, nothing)
-cv2.createTrackbar('H_max', winname, 180, 180, nothing)
-cv2.createTrackbar('S_min', winname, 0, 255, nothing)
-cv2.createTrackbar('S_max', winname, 255, 255, nothing)
-cv2.createTrackbar('V_min', winname, 0, 255, nothing)
-cv2.createTrackbar('V_max', winname, 255, 255, nothing)
-cv2.createTrackbar(switch, winname, 0, 1, nothing)
+cv2.createTrackbar('H_min', winname, setting['hue_min'], 180, nothing)
+cv2.createTrackbar('H_max', winname, setting['hue_max'], 180, nothing)
+cv2.createTrackbar('S_min', winname, setting['sat_min'], 255, nothing)
+cv2.createTrackbar('S_max', winname, setting['sat_max'], 255, nothing)
+cv2.createTrackbar('V_min', winname, setting['val_min'], 255, nothing)
+cv2.createTrackbar('V_max', winname, setting['val_max'], 255, nothing)
+cv2.createTrackbar(switch, winname, setting['on'], 1, nothing)
 cv2.imshow(winname, img)
-if os.path.exists(setting_file):
-    with open(setting_file, 'r') as f:
-        setting = json.load(f)
 
 
 def refresh():
