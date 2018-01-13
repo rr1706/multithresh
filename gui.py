@@ -55,6 +55,7 @@ def display(image):
     while image.shape[0] * image.shape[1] > 500000:
         image = cv2.pyrDown(image)
     if setting['on'] == 1:
+        image = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
         thresh = cv2.inRange(image, (setting['hue_min'], setting['sat_min'], setting['val_min']),
                              (setting['hue_max'], setting['sat_max'], setting['val_max']))
         cv2.imshow("Image", thresh)
